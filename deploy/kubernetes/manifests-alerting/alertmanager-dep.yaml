@@ -25,7 +25,12 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /etc/alertmanager
+        - name: template-volume
+          mountPath: /etc/alertmanager-template
       volumes:
       - name: config-volume
         configMap:
           name: alertmanager
+      - name: template-volume
+        configMap:
+          name: alertmanager-templates
