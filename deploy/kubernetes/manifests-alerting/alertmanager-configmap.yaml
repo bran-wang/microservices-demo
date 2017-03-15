@@ -11,28 +11,19 @@ data:
     templates:
     - '/etc/alertmanager/template/*.tmpl'
 
-    # The root route on which each incoming alert enters.
     route:
-      group_by: ['alertname', 'cluster', 'service']
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 3h
-      receiver: team-X-slack
+      group_by: [cluster]
+      # If an alert isn't caught by a route, send it slack.
+      receiver: slack-all
       routes:
-      - match_re:
-          service: ^(front-end|catalogue|carts)$
-        receiver: team-X-slack
-    inhibit_rules:
-    - source_match:
-        severity: 'critical'
-      target_match:
-        severity: 'warning'
-      equal: ['alertname', 'cluster', 'service']
+        - match:
+            severity: slack
+          receiver: slack-all
 
 
     receivers:
-    - name: 'team-X-slack'
+    - name: 'slack-all'
       slack_configs:
-      - channel: sockshop-ops
+      - channel: '#sockshop-ops'
         send_resolved: true
         api_url: <api url>
