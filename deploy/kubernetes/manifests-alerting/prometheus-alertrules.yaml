@@ -13,8 +13,8 @@ data:
       FOR 1m
       LABELS { severity = "slack" }
       ANNOTATIONS {
-        summary = "Instance {{ $labels.instance }} down",
-        description = "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.",
+        summary = "Job {{ $labels.job }} down",
+        description = "Job {{ $labels.job }} has been down for more than 1 minute.",
       }
 
     # Alert for any instance that have a median request latency >1s.
