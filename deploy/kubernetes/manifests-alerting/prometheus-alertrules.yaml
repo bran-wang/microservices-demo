@@ -7,22 +7,13 @@ metadata:
   name: prometheus-alertrules
 data:
   alert.rules: |
-    # Alert for any instance that is unreachable for >5 minutes.
-    ALERT InstanceDown
-      IF up == 0
-      FOR 1m
-      LABELS { severity = "slack" }
-      ANNOTATIONS {
-        summary = "Job {{ $labels.job }} down",
-        description = "Job {{ $labels.job }} has been down for more than 1 minute.",
-      }
+    # Alert for high error rate in the Sock Shop.
 
-    # Alert for any instance that have a median request latency >1s.
-    ALERT APIHighRequestLatency
-      IF api_http_request_latencies_second{quantile="0.5"} > 1
-      FOR 1m
+    ALERT HighErrorRate
+      IF rate(request_duration_seconds_count{status_code="500"}[5m]) > 1
+      FOR 5m
       LABELS { severity = "slack" }
       ANNOTATIONS {
-        summary = "High request latency on {{ $labels.instance }}",
-        description = "{{ $labels.instance }} has a median request latency above 1s (current value: {{ $value }}s)",
+        summary = "High error rates",
+        description = "Rate of 500 errors: {{ $value }}",
       }
