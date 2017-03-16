@@ -14,6 +14,6 @@ data:
       FOR 5m
       LABELS { severity = "slack" }
       ANNOTATIONS {
-        summary = "High error rates",
-        description = "Rate of 500 errors: {{ $value }}",
+        summary = "High HTTP 500 error rates",
+        description = "Rate of HTTP 500 errors per 5 minutes: {{ $value }}",
       }
